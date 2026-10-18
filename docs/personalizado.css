@@ -1,0 +1,263 @@
+/* ESTILOS GERAIS */
+  .reveal {
+    font-family: "Inter", "Segoe UI", Arial, sans-serif;
+    font-size: 26px !important; 
+    background-color: #ffffff !important; /* MUDOU AQUI: Fundo agora é branco */
+      color: #333333 !important; /* MUDOU AQUI: Texto base escuro para dar leitura no branco */
+  }
+
+/* Garante que o container de fundo do Reveal.js também fique na cor pedida */
+  .reveal .backgrounds {
+    background-color: #ffffff !important; /* MUDOU AQUI: Fundo geral branco */
+  }
+
+.reveal .slides {
+  text-align: justify;
+}
+
+.reveal .slides section li {
+  text-align: justify;
+}
+
+/* =========================================
+  MARGEM DE SEGURANÇA (PROJETOR)
+========================================= */
+  
+  
+  /*  CAPA SLIDE */
+  section#title-slide {
+background-color: #ffffff !important;
+  height: adjust !important;
+width: adjust !important;
+
+/* --- A CORREÇÃO DE CENTRALIZAÇÃO FORÇADA --- */
+  position: absolute !important;     /* Descola o bloco do fluxo normal do slide */
+  left: 50% !important;              /* Joga a borda esquerda do bloco para o meio da tela */
+  top: 50% !important;               /* Joga a borda superior para o meio da tela */
+  transform: translate(-50%, -50%) !important; /* Puxa o bloco de volta em 50% do seu próprio tamanho, cravando o centro absoluto */
+  
+  /* Mantém a organização dos textos centralizada */
+  display: flex !important;          
+flex-direction: column !important; 
+justify-content: center !important;
+align-items: center !important;    
+text-align: center !important;     
+border-radius: 20px !important;
+box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+/* Força OBRIGATORIAMENTE o título a ficar na cor */
+section#title-slide h1.title,
+section#title-slide h1,
+section#title-slide .title {
+color: #006d8f !important; 
+  font-size: 5rem !important;
+font-weight: 800 !important;
+margin-top: 0 !important;
+}
+/* textos da capa (Subtítulo, Autor, Data) */
+section#title-slide p,
+section#title-slide h2,
+section#title-slide h3,
+section#title-slide .subtitle,
+section#title-slide .quarto-title-author-name {
+color: #333333 !important;
+  }
+
+/* TÍTULOS DOS SLIDES NORMAIS */
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  color: #57a517 !important; /* Títulos escuros nos slides azuis */
+  font-weight: 700;
+  text-align: center;
+}
+
+.reveal h1 { font-size: 2.4em; font-weight: 800; }
+.reveal h2 { font-size: 1.7em; }
+.reveal h3 { font-size: 1.3em; font-weight: 600; }
+
+/* TEXTO E LISTAS */
+  .reveal p,
+.reveal li {
+  line-height: 1.4; 
+  font-weight: 500; 
+  color: #333333 !important; /* MUDOU AQUI: Letras pretas/escuras nos slides brancos */
+}
+
+.reveal ul li::marker {
+  color: #57a517 !important; /* MUDOU AQUI: Opcional, coloquei o marcador da lista em vermelho para combinar, ou use #333333 para preto */
+}
+
+/* color boxes */
+  .box-verdemusgo {
+    border-left: 8px solid #57a517;
+    background: rgba(255, 255, 255, 0.4);
+    padding: 0.7em;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+.box-blue {
+  border-left: 8px solid #00aedb;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.7em;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.box-green {
+  border-left: 8px solid 	#00b159;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.7em;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.box-orange {
+  border-left: 8px solid #f37735;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.7em;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.box-yellow {
+  border-left: 8px solid 	#ffc425;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 0.7em;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* BOX DISCRETA, MENOR E INCOLOR */
+  .box-discreta {
+    border-left: 5px solid #94a3b8; /* Borda cinza neutra, mais fina que as outras */
+    background: transparent !important; /* Força o fundo a ser totalmente incolor */
+      padding: 0.4em 0.7em; /* Espaçamento menor (padding) para a caixa ficar menor */
+      font-size: 0.75em; /* Reduz o tamanho da fonte em relação ao resto do texto */
+      border-radius: 4px; /* Borda levemente arredondada */
+      margin: 10px 0; /* Um pequeno respiro em cima e embaixo */
+  }
+
+/* BOX BRANCO CENTRALIZADO*/
+  .box-white {
+    background-color: #ffffff !important; /* Fundo branco sólido */
+      color: #000000 !important; /* Texto preto para leitura perfeita */
+      
+      /* Controle de Tamanho e Posição */
+      width: 80% !important; /* Evita que a caixa estique até as bordas da tela */
+      max-width: 900px !important; 
+    margin: 0 auto !important; /* O 'auto' força a caixa a ficar no exato centro horizontal do slide */
+      
+      /* Estética interna */
+      padding: 1.5em 2em !important; /* Espaço para o texto respirar dentro da caixa */
+      text-align: center !important; /* Centraliza as letras no meio do cartão */
+      border-radius: 12px !important; /* Bordas arredondadas acompanhando o estilo do seu tabset */
+      font-size: 1.5em;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important; /* Sombra para dar profundidade e destacar do azul */
+  }
+
+.box-whitetitle {
+    background-color: #ffffff !important; /* Fundo branco sólido */
+      color: #000000 !important; /* Texto preto para leitura perfeita */
+      
+      /* Controle de Tamanho e Posição */
+      width: 80% !important; /* Evita que a caixa estique até as bordas da tela */
+      max-width: 900px !important; 
+    margin: 0 auto !important; /* O 'auto' força a caixa a ficar no exato centro horizontal do slide */
+      
+      /* Estética interna */
+      padding: 1.5em 2em !important; /* Espaço para o texto respirar dentro da caixa */
+      text-align: left !important; /* Centraliza as letras no meio do cartão */
+      border-radius: 12px !important; /* Bordas arredondadas acompanhando o estilo do seu tabset */
+      font-size: 1.5em;
+  }
+
+.box-peach{
+  background-color: #dca36f !important; /* Fundo branco sólido */
+    color: #000000 !important; /* Texto preto para leitura perfeita */
+    
+    /* Controle de Tamanho e Posição */
+    width: 80% !important; /* Evita que a caixa estique até as bordas da tela */
+    max-width: 900px !important; 
+  margin: 0 auto !important; /* O 'auto' força a caixa a ficar no exato centro horizontal do slide */
+    
+    /* Estética interna */
+    padding: 1.5em 2em !important; /* Espaço para o texto respirar dentro da caixa */
+    text-align: center !important; /* Centraliza as letras no meio do cartão */
+    border-radius: 12px !important; /* Bordas arredondadas acompanhando o estilo do seu tabset */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important; /* Sombra para dar profundidade e destacar do azul */
+}
+
+
+/* DESTAQUES NO TEXTO*/
+.highlight-blue { color: #1e40af; font-weight: 700; } /* Azul marinho escuro */
+.highlight-purple { color: #7c3aed; font-weight: 700; }
+.highlight-green { color: #059669; font-weight: 700; }
+.highlight-orange { color: #ea580c; font-weight: 700; }
+                  
+ /* BLOCOS DE CÓDIGO (RStudio/Quarto) */
+.reveal pre code {
+font-size: 0.78em;
+background: #020617 !important;
+color: #e5e7eb !important;
+border-radius: 10px;
+padding: 1em;
+}
+                
+/* RODAPÉ */
+.reveal .footer {
+font-size: 0.5em;
+color: #1e293b !important; /* Cor mais escura para o rodapé ler bem no azul */
+}
+/* ABAS (TABSETS)*/
+.panel-tabset {
+background-color: rgba(255, 255, 255, 0.85) !important; 
+padding: 1.5em !important; 
+border-radius: 12px !important; 
+box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important; 
+color: #000000 !important; 
+                      
+/* --- AS DUAS LINHAS NOVAS PARA CENTRALIZAR --- */
+width: 90% !important; /* Limita a largura para não bater nas bordas */
+margin: 15px auto 0 auto !important; /* O 'auto' nas laterais força a centralização perfeita */
+}
+                
+.panel-tabset a, 
+.panel-tabset button, 
+.panel-tabset [role="tab"] {
+color: #000000 !important;
+font-weight: 600 !important;
+}
+                
+/* =========================================
+CAPA DE SEÇÃO (CAPÍTULOS)
+========================================= */
+.reveal .titulo-caixa h1 {
+  font-size: 1.8em !important; /* <--- ALTERE AQUI (Reduza para 1.5em ou 1.6em se quiser menor) */
+  color: #57a517 !important; 
+  background-color: rgba(255, 255, 255, 0.95) !important; 
+  padding: 0.4em 1.2em !important; /* Reduzi um pouco o espaçamento interno para acompanhar o texto */
+  border-radius: 15px !important; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important; 
+  display: inline-block !important; 
+  margin: 0 auto !important; 
+  font-weight: 800 !important;
+}
+
+/* Primeira linha: título agrupado */
+.gt_table thead tr:first-child th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: white !important;
+}
+
+/* Segunda linha: nomes das colunas */
+.gt_table thead tr:last-child th {
+  position: sticky;
+  top: 35px;
+  z-index: 15;
+  background-color: white !important;
+}
