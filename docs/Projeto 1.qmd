@@ -1,0 +1,394 @@
+---
+title: "**PRÁTICA ESTATÍSTICA 2**"
+subtitle: "**PROJETO 1**"
+author: "Igor Fernandes (<igorfn@id.uff.br>)"
+date: today
+date-format: "DD/MM/YYYY"
+institute: "Universidade Federal Fluminense"
+format:
+  revealjs:
+    css: personalizado.css
+    slide-number: false
+    incremental: false
+    transition: slide
+    background-transition: fade
+    width: 1280
+    height: 720
+    margin: 0.07
+    auto-stretch: false
+    title-slide-attributes:
+      data-background-image: "Imagem 1.jpg"
+      data-background-size: cover
+---
+
+#  {data-background-image="Imagem 2.jpg"}
+
+::: box-white
+<span class="highlight-green">**INTRODUÇÃO**</span>
+
+O CONTEXTO DA PANDEMIA DE COVID-19
+:::
+
+## A pandemia de Covid-19 
+
+A pandemia de Covid-19 foi um evento inimaginável e surpreendente para todas as pessoas do mundo que obrigou as pessoas a se recolherem do convívio social para resguardar a própria saúde.
+
+<br>
+
+Dentre os principais impactos dessa pandemia estão:
+
+
+::: box-green
+- Isolamento social
+
+- Trabalho remoto
+
+- Saúde mental
+
+- Adoção de aulas on-line
+
+- Mudanças nos hábitos de saúde
+:::
+
+<br>
+
+Esses impactos transformaram a vida das pessoas e aceleraram mudanças nos hábitos sociais e profissionais, algumas das quais permaneceram até mesmo após o fim da pandemia.
+
+#  {data-background-image="Imagem 2.jpg"}
+::: box-white
+<span class="highlight-green">**INTRODUÇÃO**</span>
+
+OBJETIVO DA PESQUISA
+:::
+
+## Objetivo da pesquisa
+
+- Investigar fatores associados às mudanças alimentares e comportamentais durante a pandemia.
+
+- Identificar padrões de mudança no comportamento alimentar.
+
+- Investigar possíveis mudanças alimentares segundo características sociodemográficas e econômicas.
+
+- Investigar possíveis associações entre características antropométricas.
+
+- Comparar os padrões de aumento, redução ou manutenção do consumo entre diferentes tipos de alimentos.
+
+- Explorar possíveis fatores associados às alterações de hábitos alimentares e comportamentais observadas durante a pandemia.
+
+<br>
+
+Por fim, o estudo procura criar evidências que colaborem para a compreensão da mudança de comportamento alimentar durante a pandemia de Covid-19 e os fatores associados à essas alterações.
+
+#  {data-background-image="Imagem 2.jpg"}
+::: box-white
+<span class="highlight-green">**METODOLOGIA**</span>
+
+A ORIGEM DOS DADOS
+:::
+
+## A origem dos dados {.scrollable}
+
+- Questionário on-line realizado no ano de 2022
+
+- Coletados por alunas do curso de pós-graduação em Nutrição da Universidade Federal Fluminense (UFF)
+
+- Reúne informações de 2.155 indivíduos adultos
+
+Sobre as variáveis:
+
+::: box-green
+**VARIÁVEL RESPOSTA**: 
+
+- Planejamento do Cardápio
+
+**VARIÁVEIS QUANTITATIVAS**:
+
+- Idade, Peso, Altura, IMC
+
+**VARIÁVEIS QUALITATIVAS**:
+
+- Gênero
+
+- Raça 
+
+- Região
+
+- Isolamento
+
+- Situação de Trabalho
+
+- Renda familiar
+
+- Escolaridade
+
+- Covid
+
+- Consulta ao Nutricionista
+
+- Dificuldade Financeira
+
+- Cigarro
+
+- Ansiedade
+
+- Depressão
+
+- Insônia
+
+- Enxaqueca
+
+
+:::
+
+#  {data-background-image="Imagem 2.jpg"}
+::: box-white
+<span class="highlight-green">**METODOLOGIA**</span>
+:::
+
+## Métodos Estatísticos Utilizados
+
+### Variáveis Quantitativas
+
+Para as variáveis quantitativas foram usados os seguintes métodos estatísticos:
+
+- Teste de Normalidade
+
+- Teste de Levene 
+
+- ANOVA Tradicional e ANOVA de Welch
+
+- Teste de Levene e Teste de Gamess-Howell
+
+### Variáveis Qualitativas
+
+Para as variáveis qualitativas foram usados os seguintes métodos estatísticos:
+
+- Teste de Qui-Quadrado de Independência
+
+- Coeficiente de Cramér 
+
+::: box-green
+**OBS:** Para todos os testes realizados, foi considerado um nível de significância de 5%
+:::
+
+
+#  {data-background-image="Imagem 2.jpg"}
+::: box-white
+<span class="highlight-green">**RESULTADOS**</span>
+:::
+
+## Variáveis Quantitativas
+
+```{r}
+require(openxlsx)            # Leitura de base de dados
+require(dplyr)               # Manipulação de base de dados
+require(gtsummary)           # Tabelas automáticas
+require(gt)                  # Tabelas automáticas
+require(rstatix)             # Coeficiente de Cramer
+require(ggplot2)             # Gráficos
+require(qqplotr)             # Gráficos qqplot
+require(DescTools)           # Teste de Levene
+
+Dados = read.xlsx("Nutrição.xlsx")
+Dados = Dados %>%
+  filter(!Genero %in% c("Prefiro não responder", "Outro"))
+Dados <- Dados %>%
+  mutate(Raca_cor = case_when(
+    Raca_cor %in% c("Amarela", "Indígena", "Outro", "Prefiro não declarar") ~ "Outros",
+    TRUE ~ as.character(Raca_cor)
+  ))
+Dados = Dados %>%
+  filter(!Escolaridade %in% c("Analfabeto", "Ensino Fundamental Completo",
+                              "Não desejo informar"))
+DadosQuanti = Dados %>% 
+  select(Planejamento_Cardapio,Altura,Idade,Peso, IMC)
+
+comparacoes_letras <- function(data, variable, by, ...) {
+  letras <- data.frame(
+    variavel = c("Idade", "Peso",
+                 "Altura", "IMC"),
+    comparacao = c(
+      "Aumentou e não tenho o hábito,<br>Não alterou e não tenho o hábito",
+      "Aumentou e diminuiu,<br>Diminuiu e não alterou",
+      "---",
+      "Aumentou e diminuiu,<br>Diminuiu e não alterou"
+    ),
+    stringsAsFactors = FALSE  
+  )
+  result <- letras$comparacao[letras$variavel == variable]
+  tibble::tibble(`**Comparações Múltiplas**` = result)
+}
+
+tbl_summary(data = DadosQuanti,
+                   by = Planejamento_Cardapio,
+                   statistic = all_continuous() ~ "{mean} ({sd})",
+                   label = list(
+                     Idade ~ "Idade<sup>W</sup>",
+                     Peso ~ "Peso<sup>W</sup>",
+                     Altura ~ "Altura<sup>A</sup>",
+                     IMC ~"IMC<sup>W</sup>")
+)%>%
+  add_p(
+    test = everything() ~ "oneway.test",
+    test.args = list(
+      Altura ~ list(var.equal = T),   # Variâncias iguais (Anova tradicional)
+      c(Peso,Idade,IMC) ~ list(var.equal = F)  # Variâncias diferentes (Anova de Welch)
+    ), 
+    pvalue_fun = label_style_pvalue(digits = 3)
+  )%>%
+  bold_p(t = 0.05) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Planejamento do Cardápio**") %>%
+  modify_header(label ~ "**Variáveis**") %>%
+  bold_labels() %>%
+  modify_header(all_stat_cols() ~ "**{level}**<br>{n} ({style_percent(p)}%)")%>%
+  modify_footnote(everything() ~ NA)%>%
+  add_stat(
+    fns = everything() ~ comparacoes_letras,
+    location = everything() ~ "label"
+  ) %>%
+  as_gt() %>%
+  fmt_markdown(columns = c(label, `**Comparações Múltiplas**`)) %>%
+  tab_options(
+    table.font.size = "20px",
+    heading.title.font.size = "26px",
+    column_labels.font.size = "22px"
+  )
+```
+
+## Variáveis Qualitativas {.scrollable}
+
+```{r}
+DadosQuali = Dados |> select(Planejamento_Cardapio,
+                              Genero, Raca_cor, Regiao,
+                              Isolamento, Trabalha, Renda_familiar,
+                              Escolaridade, Covid, Consulta_Nutricionista,
+                              Dificuldade_Financeira,cigarro,Ansiedade,
+                              Depressao,Insonia,Enxaqueca)
+
+cramer_fun <- function(data, variable, by, ...) {
+  tab <- table(data[[variable]], data[[by]])
+  v <- cramer_v(tab)
+  tibble::tibble(`**Cramér**` = round(v, 3))
+}
+
+tbl_summary(data=DadosQuali,
+            by=Planejamento_Cardapio,
+            percent = "row",
+            statistic = all_continuous() ~ "{mean} ({sd})",
+            label = list(
+              Genero ~ "Gênero<sup>Q</sup>",
+              Raca_cor ~ "Raça ou cor<sup>Q</sup>",
+              Regiao ~ "Região<sup>Q</sup>",
+              Isolamento ~ "Isolamento<sup>Q</sup>",
+              Trabalha ~ "Trabalha<sup>Q</sup>",
+              Renda_familiar ~ "Renda familiar<sup>Q</sup>",
+              Escolaridade ~ "Escolaridade<sup>Q</sup>",
+              Covid ~ "Covid<sup>Q</sup>",
+              Consulta_Nutricionista ~ "Consulta ao nutricionista<sup>Q</sup>",
+              Dificuldade_Financeira ~ "Dificuldade financeira<sup>Q</sup>",
+              cigarro ~ "Cigarro<sup>Q</sup>",
+              Ansiedade ~ "Ansiedade<sup>Q</sup>",
+              Depressao ~ "Depressão<sup>Q</sup>",
+              Insonia ~ "Insônia<sup>Q</sup>",
+              Enxaqueca ~ "Enxaqueca<sup>Q</sup>"
+            )) |> 
+  add_p(pvalue_fun = label_style_pvalue(digits = 3)) |> 
+  bold_p(t = 0.05) |> 
+  add_stat(fns = everything() ~ cramer_fun) |> 
+  modify_spanning_header(all_stat_cols() ~ "**Planejamento com o Cardápio**") |> 
+  modify_header(label ~ "**Variáveis**") |> 
+  bold_labels() |> 
+  modify_header(all_stat_cols() ~ "**{level}**<br>{n} ({style_percent(p)}%)") |> 
+  modify_bold(
+    columns = stat_1,  # primeira coluna
+    rows = (
+      (variable == "Regiao" & label %in% c("Norte", "Sul"))|
+        (variable == "Isolamento" & label %in% c("Não", "Sim")) |
+        (variable == "Renda_familiar" & label  == "até R$ 1254,00") |
+        (variable == "Escolaridade" & label %in% c("Ensino Médio Completo","Pós-graduação")) |
+        (variable == "Consulta_Nutricionista" & label %in% c("Não", "Sim"))
+    )) |> 
+  modify_bold(
+    columns = stat_2, # segunda coluna
+    rows = (
+      (variable == "Isolamento" & label %in% c("Não", "Sim")) | 
+        (variable == "Renda_familiar" & label  == "até R$ 1254,00") |
+        (variable == "Escolaridade" & label %in% c("Ensino Superior Completo", "Pós-graduação")) |
+        (variable == "Dificuldade_Financeira" & label %in% c("Não", "Sim")) |
+        (variable == "Ansiedade" & label %in% c("Não", "Sim")) |
+        (variable == "Depressao" & label %in% c("Não", "Sim")) |
+        (variable == "Insonia" & label %in% c("Não", "Sim"))
+    )) |> 
+  modify_bold(
+    columns = stat_3,  # terceira coluna
+    rows = (
+      (variable == "Regiao" & label == "Norte") | 
+        (variable == "Isolamento" & label %in% c("Não", "Sim")) |
+        (variable == "Renda_familiar" & label == ("até R$ 1254,00")) |
+        (variable == "Consulta_Nutricionista" & label %in% c("Não", "Sim")) |
+        (variable == "Dificuldade_Financeira" & label %in% c("Não", "Sim")) |
+        (variable == "Ansiedade" & label %in% c("Não","Sim")) |
+        (variable == "Depressao" & label %in% c("Não", "Sim")) |
+        (variable == "Insonia" & label %in% c("Não", "Sim")) |
+        (variable == "Enxaqueca" & label %in% c("Não", "Sim"))
+    ))|> 
+  modify_bold(
+    columns = stat_4,  # quarta coluna
+    rows = (
+      (variable == "Escolaridade" & label %in% c("Ensino Médio Completo", "Pós-graduação")) |
+        (variable == "Depressao" & label %in% c("Não", "Sim"))
+    )) |> 
+  modify_table_body(
+    ~ .x |>
+      mutate(
+        label = ifelse(
+          variable == "Renda_familiar" &
+            label == "entre R$ 1.255 - R$ 8.640",
+          "entre 1255 a R$ 8640",
+          label
+        )
+      )
+  ) |> 
+  modify_footnote(everything() ~ NA)|>
+  as_gt() |>                   
+  fmt_markdown(columns = label) |>
+  tab_options(
+    table.font.size = "20px",    
+    heading.title.font.size = "26px",
+    column_labels.font.size = "22px",
+    container.height = px(600),
+  container.overflow.y = "auto"
+  )
+```
+
+#  {data-background-image="Imagem 2.jpg"}
+::: box-white
+<span class="highlight-green">**CONCLUSÃO**</span>
+:::
+
+---
+
+### Variáveis Qualitativas
+
+::: box-green 
+Conclui-se que o aumento no planejamento do cardápio esteve diretamente associado a maiores níveis de privilégio socioeconômico e melhor status de saúde mental, destacando que a capacidade de manter rotinas alimentares estruturadas é fortemente influenciada pelos determinantes sociais e de bem-estar."
+:::
+
+<br>
+
+### Variáveis Quantitativas
+
+::: box-green
+Conclui-se que os grupos que diminuíram ou nunca adotaram o planejamento alimentar destoaram do padrão geral, demonstrando que a desorganização da rotina do cardápio caminha lado a lado com a menor idade e o aumento do IMC.
+:::
+
+<br>
+
+::: box-orange
+Logo, nota-se que melhores condições de saúde, mentais e financeiras foram um fator determinante para que as pessoas pudessem planejar melhor as suas refeições durante a pandemia.
+:::
+
+#  {data-background-image="Imagem 2.jpg"}
+::: box-white
+<span class="highlight-green">**FIM**</span>
+:::
